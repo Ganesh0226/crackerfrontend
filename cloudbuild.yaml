@@ -1,0 +1,28 @@
+steps:
+  - name: 'node:14'
+    entrypoint: 'bash'
+    args:
+      - -c
+      - |
+        echo "Installing dependencies..."
+        npm install
+
+  - name: 'node:14'
+    entrypoint: 'bash'
+    args:
+      - -c
+      - |
+        echo "Building the React application..."
+        npm run build
+
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - -c
+      - |
+        echo "Uploading to GCS..."
+        gsutil -m rsync -d -r build/ gs://YOUR_BUCKET_NAME
+
+artifacts:
+  files:
+    - build/**
