@@ -14,5 +14,8 @@ steps:
       '--allow-unauthenticated'
     ]
 
+    images:
+  - 'gcr.io/$PROJECT_ID/quickstart-image'
+
 options:
   logging: CLOUD_LOGGING_ONLY
