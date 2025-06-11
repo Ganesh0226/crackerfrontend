@@ -1,23 +1,38 @@
-version: 0.2
+steps:
+  # 1. Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/quickstart-image', '.' ]
 
-phases:
-  install:
-    runtime-versions:
-      nodejs: 14  # Specify the Node.js version
-    commands:
-      - echo Installing dependencies...
-      - npm install
+  # 2. Tag the image for Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'tag'
+      - 'gcr.io/$PROJECT_ID/quickstart-image'
+      - 'asia-south1-docker.pkg.dev/$PROJECT_ID/my-repo/quickstart-image:latest' # << UPDATE REGION & REPO
 
-  build:
-    commands:
-      - echo Building the React application...
-      - npm run build
+  # 3. Push the image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'asia-south1-docker.pkg.dev/$PROJECT_ID/my-repo/quickstart-image:latest' # << UPDATE REGION & REPO
 
-  post_build:
-    commands:
-      - echo Uploading to S3...
-      - aws s3 sync build/ s3://teamsix.online --delete
+  # 4. Deploy the image (example: Cloud Run)
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    args:
+      - 'gcloud'
+      - 'run'
+      - 'deploy'
+      - 'quickstart-service' # << UPDATE SERVICE NAME
+      - '--image'
+      - 'asia-south1-docker.pkg.dev/$PROJECT_ID/my-repo/quickstart-image:latest' # << UPDATE REGION & REPO
+      - '--region'
+      - 'asia-south1' # << UPDATE DEPLOYMENT REGION
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated' # Adjust as needed
 
-artifacts:
-  files:
-    - build/**/*
+images:
+  - 'asia-south1-docker.pkg.dev/$PROJECT_ID/my-repo/quickstart-image:latest' # << UPDATE REGION & REPO
+
+options:
+  logging: CLOUD_LOGGING_ONLY
