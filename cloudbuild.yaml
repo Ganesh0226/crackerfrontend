@@ -14,5 +14,5 @@ steps:
 
         echo "🚀 Running SonarScanner with properties file..."
         export SONAR_TOKEN=$TOKEN
-        sonar-scanner
+        sonar-scanner -Dsonar.login=$SONAR_TOKEN
 
