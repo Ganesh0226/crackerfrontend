@@ -13,6 +13,6 @@ steps:
         echo "✅ Token generated: $TOKEN"
 
         echo "🚀 Running SonarScanner with properties file..."
-        export SONAR_TOKEN=$TOKEN
-        sonar-scanner -Dsonar.login=$SONAR_TOKEN
+        export SONAR_TOKEN="$TOKEN"
+        sonar-scanner -Dsonar.login="$SONAR_TOKEN"
 
