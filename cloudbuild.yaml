@@ -2,7 +2,7 @@ options:
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
 
 steps:
-  - name: 'us-central1-docker.pkg.dev/polished-core-463907-m5/sonar/sonar:latest'
+  - name: '${_GAN_DOCKER_REPO_PATH}sonar:${_IMAGE_TAG}'
     entrypoint: 'bash'
     args:
       - '-c'
