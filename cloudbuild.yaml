@@ -9,8 +9,8 @@ steps:
         echo "🔐 Generating token from SonarQube API..."
         TOKEN=$(curl -u admin:admin -X POST "http://localhost:9000/api/user_tokens/generate" -d "name=cloudbuild-token" | jq -r '.token')
 
-        echo "✅ Token generated: $TOKEN"
+        echo "✅ Token generated: $_TOKEN"
 
         echo "🚀 Running SonarScanner with properties file..."
-        export SONAR_TOKEN=$TOKEN
+        export SONAR_TOKEN=$_TOKEN
         sonar-scanner
