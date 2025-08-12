@@ -1,5 +1,6 @@
 options:
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
+
 steps:
   - name: '${_GAN_DOCKER_REPO_PATH}sonar:${_IMAGE_TAG}'
     entrypoint: 'bash'
@@ -9,8 +10,9 @@ steps:
         echo "🔐 Generating token from SonarQube API..."
         TOKEN=$(curl -u admin:admin -X POST "http://localhost:9000/api/user_tokens/generate" -d "name=cloudbuild-token" | jq -r '.token')
 
-        echo "✅ Token generated: $_TOKEN"
+        echo "✅ Token generated: $TOKEN"
 
         echo "🚀 Running SonarScanner with properties file..."
-        export SONAR_TOKEN=$_TOKEN
+        export SONAR_TOKEN=$TOKEN
         sonar-scanner
+
