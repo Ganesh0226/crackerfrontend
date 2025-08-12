@@ -1,5 +1,5 @@
 steps:
-  - name: 'gcr.io/YOUR_PROJECT_ID/sonar-api-builder'
+  - name: ${_GAN_DOCKER_REPO_PATH}sonar:${_IMAGE_TAG}
     entrypoint: 'bash'
     args:
       - '-c'
