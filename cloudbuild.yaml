@@ -7,12 +7,7 @@ steps:
     args:
       - '-c'
       - |
-        echo "🔐 Generating token from SonarQube API..."
-        TOKEN=$(curl -u admin:admin -X POST "http://localhost:9000/api/user_tokens/generate" -d "name=cloudbuild-token" | jq -r '.token')
+        echo "🧪 Running Maven build..."
+        mvn clean install
 
-        echo "✅ Token generated: $TOKEN"
-
-        echo "🚀 Running SonarScanner with properties file..."
-        export SONAR_TOKEN="$TOKEN"
-        sonar-scanner -Dsonar.login="$SONAR_TOKEN"
-
+        echo "✅ Build complete!"
